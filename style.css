@@ -24,13 +24,11 @@
     padding: 0;
     box-sizing: border-box;
     scroll-behavior: smooth;
+}
 
-    selection: {
-        background: var(--color-primary);
-        color: white;
-    }
-
-    ;
+::selection {
+    background: var(--color-primary);
+    color: white;
 }
 
 body {
