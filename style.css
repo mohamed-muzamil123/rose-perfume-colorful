@@ -606,15 +606,25 @@ body {
         margin-top: 3rem;
     }
 
-    .floating-whatsapp {
-        bottom: 20px;
-        right: 20px;
-        width: 55px;
-        height: 55px;
-    }
-
     .floating-whatsapp svg {
         width: 30px;
         height: 30px;
+    }
+
+    /* Optimized Footer for Mobile */
+    .footer-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+        padding: 0 1rem;
+    }
+
+    .social-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .social-icon svg {
+        width: 18px;
+        height: 18px;
     }
 }
