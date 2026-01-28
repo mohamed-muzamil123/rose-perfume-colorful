@@ -488,9 +488,12 @@ body {
 }
 
 .social-icon svg {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    /* Slightly larger looks better for solid icons */
+    height: 22px;
     fill: currentColor;
+    display: block;
+    /* Removes bottom whitespace */
 }
 
 /* Animations */
