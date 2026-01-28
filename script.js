@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
         el.style.transition = 'opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
-        
+
         if (el.classList.contains('product-card')) {
             el.style.transitionDelay = `${index * 150}ms`;
         }
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- 2. Custom Physics Engine for Floating Elements ---
-    
+
     const canvas = document.createElement('canvas');
     const heroVisual = document.querySelector('.hero-visual');
     if (!heroVisual) return; // Exit if not on home page
@@ -117,35 +117,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Particles
     let particles = [];
-    
+
     function init() {
         width = canvas.width = heroVisual.offsetWidth;
         height = canvas.height = heroVisual.offsetHeight;
 
         particles = [];
-        
+
         // Create the two main blobs matching CSS colors but rendered here for physics
         // Big Blue Blob
-        particles.push(new Particle(width * 0.8, 100, 150, 'rgba(19, 105, 175, 0.4)')); 
-        
+        particles.push(new Particle(width * 0.8, 100, 150, 'rgba(19, 105, 175, 0.4)'));
+
         // Medium Cyan/Accent Blob
         particles.push(new Particle(width * 0.2, height - 100, 100, 'rgba(0, 180, 216, 0.4)'));
 
         // Add some smaller floating particles for "space dust" effect
-        for(let i = 0; i < 5; i++) {
-             particles.push(new Particle(
-                 Math.random() * width, 
-                 Math.random() * height, 
-                 Math.random() * 20 + 5, 
-                 'rgba(255, 255, 255, 0.1)'
-             ));
+        for (let i = 0; i < 5; i++) {
+            particles.push(new Particle(
+                Math.random() * width,
+                Math.random() * height,
+                Math.random() * 20 + 5,
+                'rgba(255, 255, 255, 0.1)'
+            ));
         }
     }
 
     // Animation Loop
     function animate() {
         ctx.clearRect(0, 0, width, height);
-        
+
         particles.forEach(p => {
             p.update();
             p.draw();
@@ -165,24 +165,52 @@ document.addEventListener('DOMContentLoaded', () => {
     init();
     animate();
 
-    // Mouse Interaction (Push particles away)
-    heroVisual.addEventListener('mousemove', (e) => {
+    // Interaction Handler
+    const handleInteraction = (clientX, clientY) => {
         const rect = heroVisual.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
 
         particles.forEach(p => {
-            const dx = p.x - mouseX;
-            const dy = p.y - mouseY;
+            const dx = p.x - x;
+            const dy = p.y - y;
             const dist = Math.sqrt(dx * dx + dy * dy);
-            
+
             if (dist < 200) {
                 const force = (200 - dist) / 200;
                 const angle = Math.atan2(dy, dx);
-                p.vx += Math.cos(angle) * force * 0.5;
-                p.vy += Math.sin(angle) * force * 0.5;
+                p.vx += Math.cos(angle) * force * 0.8; // Increased force slightly
+                p.vy += Math.sin(angle) * force * 0.8;
             }
         });
+    };
+
+    // Mouse Event
+    heroVisual.addEventListener('mousemove', (e) => {
+        handleInteraction(e.clientX, e.clientY);
+    });
+
+    // Touch Event (Mobile)
+    heroVisual.addEventListener('touchmove', (e) => {
+        e.preventDefault(); // Prevent scrolling while interacting with canvas if needed, or remove if scrolling is preferred
+        const touch = e.touches[0];
+        handleInteraction(touch.clientX, touch.clientY);
+    }, { passive: false });
+
+    // Scroll Momentum force
+    let lastScrollY = window.scrollY;
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        const scrollDelta = currentScrollY - lastScrollY;
+        const scrollForce = scrollDelta * 0.05; // Force multiplier
+
+        // Apply scroll force to particles ("Wind" effect)
+        particles.forEach(p => {
+            p.vy -= scrollForce * (p.mass * 5); // Heavier particles move less? No, try uniform or mass inverted. 
+            // Actually, let's just push them up/down based on scroll direction
+        });
+
+        lastScrollY = currentScrollY;
     });
 
     // Hide original CSS circles since we are rendering them in Canvas
