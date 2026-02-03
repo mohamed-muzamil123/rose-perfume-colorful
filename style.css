@@ -94,8 +94,14 @@ body {
     text-shadow: 0 0 8px rgba(19, 105, 175, 0.8);
 }
 
-.nav a:not(.btn-whatsapp):hover::after {
+.nav a:not(.btn-whatsapp):hover::after,
+.nav a.active:not(.btn-whatsapp)::after {
     width: 100%;
+}
+
+.nav a.active {
+    color: white;
+    text-shadow: 0 0 8px rgba(19, 105, 175, 0.8);
 }
 
 .btn-whatsapp {
@@ -627,4 +633,52 @@ body {
         width: 18px;
         height: 18px;
     }
+}
+
+/* Pricing Styles */
+.price-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+}
+
+.offer-price {
+    color: var(--color-accent);
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-shadow: 0 0 10px rgba(255, 183, 3, 0.3);
+}
+
+.view-all-container {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.btn-secondary {
+    display: inline-block;
+    padding: 0.8rem 2.5rem;
+    background: transparent;
+    border: 1px solid var(--color-text);
+    color: var(--color-text);
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-color: white;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    transform: translateY(-3px);
 }
